@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Random Jokes</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #67C6E3;
+        }
+
+        .content{
+            width: 500px;
+            text-align: center;
+            background-color: #378CE7;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+            border: none;
+        }
+
+        h1{
+            color: rgba(255, 255, 255, 0.719);  
+        }
+
+        p{
+            margin: 20px;
+            word-spacing: 5px;
+            line-height: 25px;
+            color: rgba(255, 255, 255, 0.719);
+            font-size: 20px;
+        }
+        button{
+            padding: 10px 15px;
+            background-color: chocolate;
+            color: burlywood;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.719);
+            background-color: #5356ffa4;
+            border-radius: 15px;
+
+        }
+
+        @media(max-width:430px){
+            .container{
+                padding: 15px;
+            }
+            .content{
+                width: 100%;
+                padding-inline: 10px;
+            }
+        }
+
+        @media(max-width:360px){
+            .container{
+                padding: 10px;
+            }
+        }
+
+        @media(max-width:320px){
+            .container{
+                padding: 8px;
+            }
+              
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Welcome to Dad joke</h1>
+            <p class="api-body"> </p>
+            <button class="btn">Get another joke</button>
+        </div>
+    </div>
+
+    <script>
+        const apiBody = document.querySelector('.api-body');
+        const apiUrl = "https://api.chucknorris.io/jokes/random";
+        const btn = document.querySelector('.btn');
+
+
+       const fetchApi = () =>{
+
+           apiBody.innerHTML = "Loading..."
+
+           fetch(apiUrl)
+           .then((res) =>{
+            console.log(res);
+             return res.json();
+             
+           }).then((data) =>{
+            console.log(data.value)
+            apiBody.innerHTML = data.value;
+           })
+           .catch((err) =>{
+            apiBody.innerHTML = "something wrong please try again";
+            console.log(err);
+           })
+       }
+
+       fetchApi();
+
+        btn.addEventListener('click', fetchApi);
+
+            
+
+
+    </script>
+</body>
+</html>

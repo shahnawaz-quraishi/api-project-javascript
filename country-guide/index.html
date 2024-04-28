@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Guide</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0c4bd4c7;      
+        }
+
+        .content{
+            padding: 50px 30px;
+            background-color: #b7c9f241;
+            backdrop-filter: blur(10px);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 10px;
+        }
+
+       .search-bar input{
+            width: 250px;
+            height: 40px;
+            border: none;
+            border-bottom: 1px solid blue;
+            outline: none;
+            font-size: 18px;
+            margin-right: 10px;
+            border-radius: 10px;
+            padding-left: 15px;
+            
+
+        }
+
+        
+        .search-bar  button{
+            padding: 10px 25px;
+            background-color: blue;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            color: white;
+        }
+
+        
+        
+
+      .country-data .img-title{
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .country-data  img{
+            width: 200px;
+            margin-bottom: 10px;
+        }
+
+        .country-data  h1{
+            color: blue;
+        }
+
+
+        .details p{
+            color: black;
+            font-size: 18px;
+            font-weight: bolder;
+          
+        }
+
+        .details p span{
+            color: blue;
+            font-size: 17px;
+            margin-left: 5px;
+            
+        }
+
+        .err{
+            margin-top: 10px;
+            color: red;
+        }
+
+        @media(max-width:430px){
+            .container{
+                padding: 20px;
+            }
+            .content{
+                width: 100%;
+                padding: 20px;
+            }
+            .search-bar input{
+                width: 100%;
+            }
+            .search-bar button{
+                width: 100%;
+                margin: 20px 0;
+            }
+        }
+
+        @media(max-width:320px){
+            .container{
+                padding: 10px;
+            }
+            .content{
+                padding: 20px;
+                padding-inline: 10px;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="content">
+            <div class="search-bar">
+                <input type="text" class="inputField" placeholder="Enter a country name">
+                <button class="btn">Search</button>
+            </div>
+            <div class="country-data">
+            <!-- <div class="img-title">
+                <img src="/img/Screenshot (23).png" alt="">
+                <h1>India</h1>
+            </div>
+            <div class="details">
+                <p>Captial: <span>New Delhi</span></p>
+                <p>Continent: <span>Asia</span></p>
+                <p>Population: <span>13485458685</span></p>
+                <p>Currency: <span>Indain Rupee</span></p>
+                <p>Common Languages: <span>English,hindi</span></p>
+            </div> -->
+
+        </div>
+
+        </div>
+    </div>
+   
+    
+    <script>
+
+        const inputField = document.querySelector('.inputField');
+        const btn = document.querySelector('.btn');
+        const countryData = document.querySelector('.country-data');
+      
+        const searchCountry = async () =>{
+            try{
+                countryData.innerHTML = `<h3 class="err"> Loading...`;
+            let inputVal = inputField.value;
+            const apiUrl = `https://restcountries.com/v3.1/name/${inputVal}?fullText=true`;
+
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            console.log(data)
+            
+           
+            countryData.innerHTML = `
+            
+            <div class="img-title">
+                <img src="${data[0].flags.png}" alt="">
+                <h1>${data[0].name.common}</h1>
+            </div>
+            <div class="details">
+                <p>Captial: <span>${data[0].capital[0]}</span></p>
+                <p>Continent: <span>${data[0].continents[0]}</span></p>
+                <p>Population: <span>${data[0].population}</span></p>
+                <p>Currency: <span>${data[0].currencies[Object.keys(data[0].currencies)].name} - ${Object.keys(data[0].currencies)[0]}</span></p>
+                <p>Common Languages: <span>${Object.values(data[0].languages).toString().split(",").join(", ")}</span></p>
+            </div>
+            `;
+
+      
+        }catch(err){
+          if(inputField.value == ""){
+                countryData.innerHTML = `<h3 class="err"> Please enter a country name`;
+          }else{
+                countryData.innerHTML = `<h3 class="err"> Please enter a valid country name`;
+          }
+        }
+
+
+        }
+
+        btn.addEventListener('click',searchCountry);
+    </script>
+</body>
+</html>

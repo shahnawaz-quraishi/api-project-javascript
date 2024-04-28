@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi Random Quotes</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #08D9D6;
+        }
+
+        .content{
+            width: 600px;
+            text-align: center;
+            background-color: #FF2E63;
+            padding: 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        h1{
+            color: #252A34;
+        }
+
+        p{
+            margin: 20px;
+            word-spacing: 5px;
+            line-height: 45px;
+            font-size: 25px;
+            color: white;
+        }
+
+        h2{
+            margin: 10px 0;
+            color: #252A34;
+            font-size: 20px;
+          
+        }
+
+        button{
+            padding: 10px;
+            background-color: #08D9D6;
+            color: #252A34;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        @media(max-width:430px){
+            .container{
+                padding: 15px;
+            }
+            .content{
+                width: 100%;
+                padding-inline: 10px;
+            }
+        }
+
+        @media(max-width:360px){
+            .container{
+                padding: 10px;
+            }
+        }
+
+        @media(max-width:320px){
+            .container{
+                padding: 8px;
+            }
+            .content{
+                padding-inline: 5px;
+            }
+           
+        }
+
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Welcome to hindi Quote</h1>
+            <p class="api-body"> </p>
+            <h2 class="type"></h2>
+            <button class="btn">Get another joke</button>
+        </div>
+    </div>
+
+    <script>
+        const apiBody = document.querySelector('.api-body');
+        const apiType = document.querySelector('.type');
+        const apiUrl = "https://hindi-quotes.vercel.app/random";
+
+        const fetchData = async () =>{
+
+            try{
+
+                apiBody.innerHTML = "Loading..."
+
+            const res = await fetch(apiUrl);
+
+            const data = await res.json();
+
+            console.log(data)
+
+            apiBody.innerHTML = data.quote;
+
+            apiType.innerHTML = data.type;
+
+            }catch(err){
+                apiBody.innerHTML = "something wrong please try agian."
+                console.log(err);
+            }
+
+             
+        }
+
+        fetchData();
+     
+
+       
+
+        const btn = document.querySelector('.btn');
+
+        btn.addEventListener('click', fetchData);
+
+
+    </script>
+</body>
+</html>

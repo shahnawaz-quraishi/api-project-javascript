@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whether</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background-color: #50c3ed9d;
+            
+            
+        }
+        .content{
+            width: 50%;
+            height: 90vh;
+            margin: 40px 0;
+            background-color: #fba8346c;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                 
+        }
+
+        input{
+            width: 200px;
+            height: 40px;
+            padding-left: 10px;
+            margin: 20px 40px;
+            border-radius: 15px;
+            border: none;
+            outline: none;
+        }
+
+        .content-info{
+           color: #333A73; 
+        text-align: center;
+           
+        }
+
+        .date{
+            margin: 10px 0;
+        }
+
+        p,span{
+            color: #333A73; 
+            font-size: 20px;
+        }
+
+        .mausam{
+            margin: 10px 0;
+            
+        }
+
+        img{
+            width: 50px;
+           
+        }
+
+        .min-max{
+            text-align: center;
+            margin: 10px 0;
+           
+        }
+
+        .min{
+            margin-right: 20px;
+        }
+
+        .features{
+            margin: 50px;
+            display: grid;
+            place-items: center;
+            grid-template-columns: repeat(2,1fr);
+            gap: 30px;
+            
+        }
+
+        .fe-item{
+            width: 250px;
+            height: 70px;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(20px);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background-color: #fba8348a;
+        }
+
+        .fe-item p{
+            margin-bottom: 5px;
+        }
+
+
+        @media(max-width:430px){
+            .container{
+                padding: 10px;
+            }
+           .content{
+            width: 100%;
+           } 
+           .features{
+            margin-inline: 0;
+            gap: 20px;
+           }
+
+           .fe-item{
+            width: 160px;
+           }
+        }
+
+        @media(max-width:375px){
+            .container{
+                padding: 10px;
+                height: auto;
+            }
+            .content{
+                padding: 10px;
+                height: auto;
+            }
+            .features{
+                grid-template-columns: repeat(1,1fr);
+            }
+            .fe-item{
+               width: 100%; 
+            }
+        }
+
+        @media(max-width:320px){
+            .container{
+                padding: 0;
+            }
+            .content{
+                padding: 0;
+            }
+            .features{
+                padding: 10px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="content">
+            <form action="">
+          <input type="search" class="search" placeholder="Searching your city...">
+        </form>
+          <div class="content-info">
+            <h2 class="city">London, United Kingdom</h2>
+            <p class="date">Monday,March 18, 2024 at 03:26 PM</p>
+             <p class="mausam">Clouds</p>
+             <img src="https://openweathermap.org/img/wn/10d@4x.png" class="temp-img">
+             <h2 class="temp">277.46</h2>
+          </div>
+          <div class="min-max ">
+            <span class="min">Min 276</span>
+            <span class="max">Max 279</span>
+          </div>
+
+          <div class="features">
+            <div class="fe-item ">
+                <p>Feels Like</p>
+                <span class="feel">273.56</span>
+            </div>
+            <div class="fe-item">
+                <p>Humidity</p>
+                <span class="humidity">89%</span>
+            </div>
+            <div class="fe-item">
+                <p>Wind</p>
+                <span class="wind">5.14 m/s</span>
+            </div>
+            <div class="fe-item">
+                <p>Pressure</p>
+                <span class="pressure">984 hPa</span>
+            </div>
+          </div>
+
+        </div>
+    </div>
+    
+
+
+
+    <script>
+   
+
+        let city = "samastipur";
+        const form = document.querySelector('form');
+        const search = document.querySelector('.search');
+        const cityName = document.querySelector('.city');
+        const date = document.querySelector('.date');
+        const mausam = document.querySelector('.mausam');
+        const tempImg = document.querySelector('.temp-img');
+        const temp = document.querySelector('.temp');
+        const min = document.querySelector('.min');
+        const max = document.querySelector('.max');
+        const feel = document.querySelector('.feel');
+        const humidity = document.querySelector('.humidity');
+        const wind = document.querySelector('.wind');
+        const pressure = document.querySelector('.pressure');
+        const content = document.querySelector(".content");
+
+
+        // get country code
+
+        const getCountryCode = (code) =>{
+            return new Intl.DisplayNames([code], {type: 'region'}).of(code);
+        }
+
+        // get date and time
+
+        const getDate = (dt) =>{
+           
+
+           const curDate = new Date(dt * 1000);
+           console.log(curDate);
+
+           const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+           }
+
+           const formatter = new Intl.DateTimeFormat('en-US', options);
+
+           console.log(formatter);
+
+           return formatter.format(curDate);
+        };
+
+      
+
+        // serarch
+        form.addEventListener('submit', (e) =>{
+
+            cityVal = search.value
+            console.log(cityVal);
+            city = cityVal;
+            e.preventDefault();
+
+           
+            getTemp();
+
+
+        }) 
+
+        
+
+        const getTemp = async () =>{
+      
+
+            try{
+
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=54e5d2cc78de61d64bfa76640217d856&units=metric`;
+
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            console.log(data)
+            temp.innerHTML = `${data.main.temp} °C`;
+            cityName.innerHTML = `${data.name}, ${getCountryCode(data.sys.country)}`;
+            date.innerHTML = getDate(data.dt);
+            mausam.innerHTML = data.weather[0].main;
+            tempImg.innerHTML = data.weather[0].icon;
+            min.innerHTML = `min: ${data.main.temp_min} °C`;
+            max.innerHTML = `max: ${data.main.temp_max} °C`;
+            feel.innerHTML = `${data.main.feels_like} °C`;
+            humidity.innerHTML = `${data.main.humidity}%`;
+            pressure.innerHTML = `${data.main.pressure} hPa`;
+            wind.innerHTML = `${data.wind.speed}m/s`;
+
+        }catch(err){
+          
+            alert("please enter the correct city name");
+        }
+
+        }
+
+        document.body.addEventListener('load',getTemp());
+
+    </script>
+</body>
+</html>

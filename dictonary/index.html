@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictonary</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: rgba(255, 255, 255, 0.651);
+        }
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: gray;
+        }
+
+        .content{
+            width: 600px;
+            padding: 40px 20px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            border-radius: 35px 10px;
+        }
+
+        .search{
+            display: flex;
+            align-items: center;
+           
+            gap: 40px;
+        }
+
+        input{
+            width: 380px;
+            height: 50px;
+            outline: none;
+            border: none;
+            border-bottom: 5px solid blue;
+            padding-left: 15px;
+            padding-bottom: 5px;
+            font-size: 18px;
+            color: blue;
+            /* border-radius: 10px; */
+            border-radius: 20px 5px;
+        }
+        .btn{
+            width: 120px;
+            padding: 17px 30px;
+            background-color: blue;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 25px 5px;
+            cursor: pointer;
+            
+        }
+
+        .result{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+       
+        .icon{
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .pros{
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .meaning{
+       
+         font-size: 20px;
+         margin: 20px 0;
+        }
+
+        .meaning-2{
+         
+         font-size: 20px;
+         display: flex;
+         align-items: center;
+         gap: 20px;
+        
+        }
+
+        .meaning-2::before{
+            content: "";
+            width: 5px;
+            height: 50px;
+            left: 0;
+            background-color: blue;
+            display: inline-block;
+       
+        }
+
+        h3{
+            font-size: 30px;
+            padding-top: 10px;
+            
+        }
+
+        @media(max-width:430px){
+            .container{
+                padding: 10px;
+            }
+            .content{
+                width: 100%;
+                padding: 20px;
+            }
+            .search{
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn{
+               height: 50px;
+               margin-bottom: 20px;
+            }
+        }
+
+        @media(max-width:375px){
+            input{
+               width: 200px;
+            }
+            .content{
+                padding-inline: 10px;
+            }
+        }
+
+        @media(max-width:360px){
+            .search{
+                width: 100%;
+            }
+            input{
+                width: 100%;
+            }
+            .btn{
+                width: 100%;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <audio id="sound"></audio>
+    <div class="container">
+        <div class="content">
+            <div class="search">
+            <input type="text" placeholder="Type the word here" class="inputField">
+            <button class="btn">Search</button>
+        </div>
+
+        <div class="info">
+            <!-- <div class="result">
+                <h1>Sample</h1>
+                <i class="bi bi-volume-up-fill icon"></i>
+            </div>
+            <div class="pros">
+                <p>Pros</p>
+                <p>/Sample/</p>
+            </div>
+
+            <div class="meaning">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum harum dolorum magnam sint mollitia quidem temporibus at exercitationem nemo atque!</p>
+            </div>
+
+            <div class="meaning-2">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis reprehenderit iste magni.</p>
+            </div> -->
+
+        </div>
+        </div>
+    </div>
+    
+
+    <script>
+            const inputField = document.querySelector('.inputField');
+            const btn = document.querySelector('.btn');
+            const info = document.querySelector('.info');
+            const sound = document.querySelector('#sound');
+
+            const getWord = async () =>{
+                    info.innerHTML = "<h3> Loading...</h3>"
+                try{
+                let inputVal = inputField.value;
+                const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${inputVal}`;
+
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+                console.log(data);
+                
+
+                const htmlData = `
+                <div class="result">
+                <h1>${inputVal}</h1>
+                
+                <i class="bi bi-volume-up-fill icon" onclick="playSound()"></i>
+                
+            </div>
+            <div class="pros">
+                <p>${data[0].meanings[0].partOfSpeech}</p>
+                <p>${data[0].phonetic}</p>
+            </div>
+
+            <div class="meaning">
+                <p>${data[0].meanings[0].definitions[0].definition}</p>
+            </div>
+
+            <div class="meaning-2">
+                <p>${data[0].meanings[0].definitions[0].example || ""}</p>
+            </div>
+            
+            
+                `;
+
+                info.innerHTML = htmlData;
+
+                sound.setAttribute("src", `${data[0].phonetics[0,1].audio}`);
+        }catch(er){
+           info.innerHTML = "<h3>word can not found</h3>"
+        }
+                
+            }
+
+            function playSound(){
+                sound.play();
+                
+            }
+
+            btn.addEventListener('click', getWord);
+            
+    </script>
+</body>
+</html>

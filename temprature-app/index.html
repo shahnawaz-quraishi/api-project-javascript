@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temprature</title>
+    <style>
+        *{
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #11423294;
+
+        }
+
+        .content{
+            width: 40%;
+            height: 50%;
+            text-align: center;
+            padding: 30px 0;
+            background-color: #87a92275;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            
+        }
+
+        .details{
+            color: #fcdc2a80;
+            font-size: 20px;
+        }
+
+        .search{
+           width: 200px;
+            margin: 20px 0;
+            height: 40px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #fcdc2a80;
+            border-radius: 15px;
+            padding-left: 10px;
+
+        }
+
+        img{
+            width: 50px;
+        }
+
+        .temp{
+            margin: 20px 0;
+        }
+
+        @media(max-width:430px){
+            .container{
+                padding: 20px;
+            }
+            .content{
+                width: 100%;
+                height: auto;
+            }
+            .search{
+                width: 300px;
+            }
+        }
+
+        @media(max-width:360px){
+            .container{
+                padding: 10px;
+            }
+            .search{
+                width: 250px;
+            }
+        }
+
+        @media(max-width:310px){
+            .search{
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <form action="">
+            <input type="search" class="search" placeholder="Searching...">
+        </form>
+        <div class="details">
+            <h2 class="cityName">delhi</h2>
+            <h1 class="temp">11</h1>
+            <h3 class="mausam">Clouds</h3>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        const search = document.querySelector('.search');
+        const cityName = document.querySelector('.cityName');
+        const temp = document.querySelector('.temp');
+        const mausam = document.querySelector('.mausam');
+
+        let city = "vaishali";
+
+        // city search
+
+      form.addEventListener('submit', (e) =>{
+         console.log(search.value);
+         city = search.value;
+        e.preventDefault();
+        getTemp();
+      })
+
+        const getTemp = async () =>{
+           
+            try{
+                
+
+
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=54e5d2cc78de61d64bfa76640217d856&units=metric`;
+
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+
+                console.log(data);
+
+                const {main,weather,name,sys} = data;
+
+                cityName.innerHTML = `${name}, ${sys.country}`;
+                temp.innerHTML = `${main.temp} °C`;
+                mausam.innerHTML = weather[0].main;
+
+               
+
+            }catch(err){
+                
+                console.log(err);
+            }
+        }
+        
+        document.body.addEventListener('load', getTemp());
+
+        
+    </script>
+</body>
+</html>
